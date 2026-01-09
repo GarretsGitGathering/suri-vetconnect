@@ -1,4 +1,4 @@
-name: flutterproject
+name: vetconnect
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -37,6 +37,8 @@ dependencies:
   firebase_core: any
   firebase_auth: any
   cloud_firestore: any
+  flutter_dotenv: 6.0.0
+  dart_openai: 6.1.1
 
 dev_dependencies:
   flutter_test:

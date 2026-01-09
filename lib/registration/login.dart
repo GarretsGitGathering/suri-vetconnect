@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutterproject/firebase_helper.dart';
-import 'package:flutterproject/home_page.dart';
+import 'package:vetconnect/firebase_helper.dart';
+import 'package:vetconnect/home_page.dart';
+import 'package:vetconnect/constants.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -10,18 +11,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
-  void showPopup(String title, String content) {
-    showDialog(
-      context: context, 
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(title, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-          content: Text(content, style: TextStyle(fontSize: 14)) 
-        );
-      }
-    );
-  }
 
   Future<void> loginHandler(String email, String password) async {
     if (email.length != 0 && email.contains("@") && email.contains(".") &&
@@ -34,12 +23,14 @@ class _LoginPageState extends State<LoginPage> {
         Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => HomePage()));
       } else {
         showPopup(
+          context,
           "Incorrect Credentials",
           "The email or password you inputted is incorrect. Please carefully try again."
         );
       }
     } else {
       showPopup(
+        context,
         "Incorrect Information",
         "Please enter a valid email and a password longer than six characters."
       );
@@ -48,6 +39,9 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController emailController = TextEditingController();
+    TextEditingController passwordController = TextEditingController;
+
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
@@ -67,17 +61,16 @@ class _LoginPageState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextField(
+                controller: emailController,
                 obscureText: false,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
-                  labelText: 'Username',
+                  labelText: 'Email',
                 ),
-                onChanged: (String newEntry) {
-                  print("Username was changed to $newEntry");
-                },
               ),
               SizedBox(height: 20),
               TextField(
+                controller: passwordController,
                 obscureText: true,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
@@ -87,7 +80,9 @@ class _LoginPageState extends State<LoginPage> {
 
               SizedBox(height: 30),
               FloatingActionButton(
-                onPressed: loginHandler(email, password) 
+                onPressed: () {
+                  loginHandler(emailController.text, passwordController.text); 
+                }
               )
             ],
           ),
