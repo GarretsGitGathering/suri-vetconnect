@@ -17,7 +17,6 @@ class _FirebaseUser {
   }
 }
 
-// class which holds all firebase operation methods
 class FirebaseHelper {
 
   late _FirebaseUser _firebaseUser;
