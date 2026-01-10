@@ -16,20 +16,23 @@ class _LoginPageState extends State<LoginPage> {
     if (email.length != 0 && email.contains("@") && email.contains(".") &&
         password.length >= 6) {
       // try logging user in
-      bool status = await FirebaseHelper.login(email, password);
+      FirebaseHelper? firebaseHelper = await FirebaseHelper.login(email, password);
 
-      if (status) {
+      if (firebaseHelper != null) {
+        // instantiate firebase helper 
+        Constants.firebaseHelper = firebaseHelper;
+
         // push to the homepage 
         Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => HomePage()));
       } else {
-        showPopup(
+        Constants.showPopup(
           context,
           "Incorrect Credentials",
           "The email or password you inputted is incorrect. Please carefully try again."
         );
       }
     } else {
-      showPopup(
+      Constants.showPopup(
         context,
         "Incorrect Information",
         "Please enter a valid email and a password longer than six characters."
@@ -40,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     TextEditingController emailController = TextEditingController();
-    TextEditingController passwordController = TextEditingController;
+    TextEditingController passwordController = TextEditingController();
 
     return Scaffold(
       body: Container(

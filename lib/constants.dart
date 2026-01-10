@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:vetconnect/business/business_handler.dart';
+import 'package:vetconnect/firebase_helper.dart';
+import 'package:uuid/uuid.dart';
 
-void showPopup(BuildContext context, String title, String content) {
+class Constants {
+  static late FirebaseHelper firebaseHelper;
+  static late BusinessHandler businessHandler;
+  static Uuid uuid = Uuid();
+
+  static void showPopup(BuildContext context, String title, String content) {
     showDialog(
       context: context, 
       builder: (BuildContext context) {
@@ -11,3 +19,5 @@ void showPopup(BuildContext context, String title, String content) {
       }
     );
   }
+}
+

@@ -14,7 +14,7 @@ class _RegisterPageState extends State<RegisterPage> {
   
   Future<void> registerHandler(String email, String password, String confirmPassword) async {
     if (email.length == 0 || !email.contains("@") || !email.contains(".")) {
-      showPopup(
+      Constants.showPopup(
         context, 
         "Invalid Email", 
         "The email address you have entered is not valid. Please enter a valid email."
@@ -22,20 +22,22 @@ class _RegisterPageState extends State<RegisterPage> {
       return;
     }
 
-    if (password.length < 0 || password != confirmPassword) {
-      showPopup(
+    if (password.length < 6 || password != confirmPassword) {
+      Constants.showPopup(
         context, 
         "Invalid Passwords", 
         "The password(s) you have entered are invalid. Please ensure both passwords are greater that 6 characters and match."
       );
     }
 
-    bool status = await FirebaseHelper.register(email, password);
+    FirebaseHelper? firebaseHelper = await FirebaseHelper.register(email, password);
 
-    if (status) {
+    if (firebaseHelper != null) {
+      // update global firebase helper and push to HomePage
+      Constants.firebaseHelper = firebaseHelper;
       Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => HomePage()));
     } else {
-      showPopup(
+      Constants.showPopup(
         context,
         "Unable to Register",
         "We were unable to create your account at this time. Please try again soon."
