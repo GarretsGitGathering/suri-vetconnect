@@ -2,9 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class _FirebaseUser {
-  late String _userId;
-  late String? _userName;
-  late String? _email;
+  final String _userId;
+  final String? _email;
+  String? _userName;
 
   _FirebaseUser(this._userId, this._userName, this._email);
 
@@ -19,7 +19,7 @@ class _FirebaseUser {
 
 class FirebaseHelper {
 
-  late _FirebaseUser _firebaseUser;
+  final _FirebaseUser _firebaseUser;
 
   String get userId => _firebaseUser.userId; 
   String? get userName => _firebaseUser.userName;

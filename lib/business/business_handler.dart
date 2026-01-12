@@ -2,9 +2,9 @@ import 'package:vetconnect/storage_handler.dart';
 import 'package:vetconnect/constants.dart';
 
 class _Business {
+  final String? _id;
+  final String? _startDate;
   String? _name;
-  String? _id;
-  String? _startDate;
   String? _location;
 
   _Business(this._name, this._id, this._startDate, this._location);
@@ -25,27 +25,28 @@ class _Business {
 
 class BusinessHandler {
 
-  late StorageHandler _storageHandler;
-  
-  late _Business? _userBusiness;
+  final StorageHandler _storageHandler;
+  _Business? _userBusiness;
 
   String? get name => _userBusiness?._name;
   String? get id => _userBusiness?._id;
   String? get startDate => _userBusiness?._startDate;
   String? get location => _userBusiness?._location;
 
-  BusinessHandler() {
-    _init();
-  }
+  BusinessHandler._(this._storageHandler, this._userBusiness); 
 
-  Future<void> _init() async {
-    _storageHandler = await StorageHandler.create();
-    _userBusiness = await getBusiness(Constants.firebaseHelper.userId);    
-   
-    if (await saveLocal()) {
-      print("Updated user business locally.");
-    } else {
-      print("Unable to update user busines locally.");
+  static Future<BusinessHandler?> init() async {
+    try {
+      StorageHandler storageHandler = await StorageHandler.create();
+      _Business? userBusiness = await getBusiness(Constants.firebaseHelper.userId);    
+     
+      return BusinessHandler._(
+        storageHandler,
+        userBusiness
+      );
+    } catch (e) {
+      print("Error: $e");
+      return null;
     }
   }
 
@@ -55,6 +56,8 @@ class BusinessHandler {
         print("User already has a business.");
         return false;
       }
+
+      // TODO: should also pull from firebase as well for business check
 
       if (name.length==0 || startDate.length==0 || location.length==0) {
         print("Invaild name or location.");
@@ -139,10 +142,10 @@ class BusinessHandler {
       }
 
       return _Business(
-       userBusiness[0]!,
-       userBusiness[1]!,
-       userBusiness[2]!,
-       userBusiness[3]!,
+       userBusiness[0],
+       userBusiness[1],
+       userBusiness[2],
+       userBusiness[3],
       );
     } catch (e) {
       print("Unable to load business data from Shared Preferences: $e");
