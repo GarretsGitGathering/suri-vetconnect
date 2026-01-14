@@ -17,10 +17,7 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -28,15 +25,9 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for macos - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return macos;
       case TargetPlatform.windows:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for windows - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return windows;
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -48,6 +39,16 @@ class DefaultFirebaseOptions {
         );
     }
   }
+
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyBVW3catMUXr2q2SsfN0-zAj-zPgL7nu5c',
+    appId: '1:115239100803:web:46cd2ba9cd1368584a56b6',
+    messagingSenderId: '115239100803',
+    projectId: 'veteranapp-afbf4',
+    authDomain: 'veteranapp-afbf4.firebaseapp.com',
+    storageBucket: 'veteranapp-afbf4.firebasestorage.app',
+    measurementId: 'G-1ZHV7J38VC',
+  );
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyDD8rTPVxAKS-l5rPcBJ4n42kjrX-30GFg',
@@ -64,5 +65,24 @@ class DefaultFirebaseOptions {
     projectId: 'veteranapp-afbf4',
     storageBucket: 'veteranapp-afbf4.firebasestorage.app',
     iosBundleId: 'com.projectname.flutterproject',
+  );
+
+  static const FirebaseOptions macos = FirebaseOptions(
+    apiKey: 'AIzaSyA3UWJOH3g8m9Q7nkv49BswG-TtT23zMFg',
+    appId: '1:115239100803:ios:d6eae7ac49ecae704a56b6',
+    messagingSenderId: '115239100803',
+    projectId: 'veteranapp-afbf4',
+    storageBucket: 'veteranapp-afbf4.firebasestorage.app',
+    iosBundleId: 'com.projectname.flutterproject',
+  );
+
+  static const FirebaseOptions windows = FirebaseOptions(
+    apiKey: 'AIzaSyBVW3catMUXr2q2SsfN0-zAj-zPgL7nu5c',
+    appId: '1:115239100803:web:159b4a6b5d0d707d4a56b6',
+    messagingSenderId: '115239100803',
+    projectId: 'veteranapp-afbf4',
+    authDomain: 'veteranapp-afbf4.firebaseapp.com',
+    storageBucket: 'veteranapp-afbf4.firebasestorage.app',
+    measurementId: 'G-9GD7RXKE5R',
   );
 }
