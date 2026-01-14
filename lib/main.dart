@@ -1,8 +1,11 @@
 import 'package:dart_openai/dart_openai.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:vetconnect/registration/login.dart';
 import 'package:vetconnect/registration/register.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:vetconnect/route_page.dart';
+import 'package:vetconnect/setup_page.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -33,6 +36,12 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: RegisterPage(),
+      routes: {
+        '/register': (context) => const RegisterPage(),
+        '/login': (context) => const LoginPage(),
+        '/setup': (context) => const SetupPage(),
+        '/route': (context) => const RoutePage()
+      },
     );
   }
 }

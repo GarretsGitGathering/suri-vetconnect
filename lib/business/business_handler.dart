@@ -52,12 +52,10 @@ class BusinessHandler {
 
   Future<bool> createBusiness(String name, String startDate, String location) async {
     try {
-      if (_userBusiness != null){
+      if (_userBusiness != null && await Constants.firebaseHelper.getBusiness(Constants.firebaseHelper.userId) != null){
         print("User already has a business.");
         return false;
       }
-
-      // TODO: should also pull from firebase as well for business check
 
       if (name.length==0 || startDate.length==0 || location.length==0) {
         print("Invaild name or location.");
@@ -120,7 +118,14 @@ class BusinessHandler {
         return false;
       }
 
-      _storageHandler.setBusinessData(userBusiness!);
+      List<String> completeBusiness = [
+        _userBusiness!.name!,
+        _userBusiness!.id!,
+        _userBusiness!.startDate!,
+        _userBusiness!.location!
+      ];
+
+     _storageHandler.setBusinessData(completeBusiness);
       return true;
     } catch (e) {
       print("Unable to save business data in Shared Preferences: $e");

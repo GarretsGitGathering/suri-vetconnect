@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:vetconnect/constants.dart';
-import 'package:vetconnect/route_page.dart';
 import 'package:vetconnect/services/firebase_helper.dart';
 import 'package:vetconnect/registration/login.dart';
+import 'package:vetconnect/setup_page.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -45,7 +45,7 @@ class _RegisterPageState extends State<RegisterPage> {
       Constants.firebaseHelper = firebaseHelper;
       Navigator.of(
         context,
-      ).pushReplacement(MaterialPageRoute(builder: (_) => RoutePage()));
+      ).pushReplacement(MaterialPageRoute(builder: (_) => SetupPage()));
     } else {
       Constants.showPopup(
         context,
