@@ -1,19 +1,26 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:latlong2/latlong.dart';
 
 class _FirebaseUser {
   final String _userId;
   final String? _email;
   String? _userName;
+  LatLng? _location;
 
   _FirebaseUser(this._userId, this._userName, this._email);
 
   String get userId => _userId;
   String? get userName => _userName;
   String? get email => _email;
+  LatLng? get location => _location;
 
   set userName(String userName) {
     _userName = userName;
+  }
+
+  set location(LatLng location) {
+    _location = location;
   }
 }
 

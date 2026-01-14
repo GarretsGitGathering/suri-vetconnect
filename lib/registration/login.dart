@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:vetconnect/firebase_helper.dart';
+import 'package:vetconnect/services/firebase_helper.dart';
 import 'package:vetconnect/route_page.dart';
 import 'package:vetconnect/constants.dart';
 import 'package:vetconnect/registration/register.dart';
