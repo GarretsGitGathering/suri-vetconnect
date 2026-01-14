@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:string_similarity/string_similarity.dart';
 
 class _FirebaseUser {
   final String _userId;
@@ -45,7 +46,37 @@ class FirebaseHelper {
   }
 
   Future<Map<String, dynamic>?> getBusiness(String userId) async {
-    return await _getData("users", userId);
+    Map<String, dynamic>? userData = await _getData("users", userId);
+
+    if (userData == null) {
+      return null;
+    }
+
+    return userData["business"] as Map<String, dynamic>?;
+  }
+
+  Future<List<Map<String, dynamic>?>> searchForBusiness(String queryString) async {
+    List<QueryDocumentSnapshot<Object?>> collectionSnapshot = await _getCollection("users") ?? [];
+   
+    collectionSnapshot.sort((a, b) => a["business"]["name"].similarityTo(b["business"]["name"]));
+
+    List<Map<String, dynamic>> users = collectionSnapshot.sublist(0, 9) as List<Map<String, dynamic>>;
+
+    List<Map<String, dynamic>> userBusinesses = users.map((map) {
+      return map["business"];
+    }).toList() as List<Map<String, dynamic>>;
+
+    return userBusinesses;
+  }
+
+  Future<List<QueryDocumentSnapshot<Object?>>?> _getCollection(String collection) async {
+    try {
+      QuerySnapshot snapshot = await FirebaseFirestore.instance.collection(collection).get();
+      return snapshot.docs.toList();
+    } catch (e) {
+      print("Unable to get collection: $e");
+      return null;
+    }
   }
 
   Future<Map<String, dynamic>?> _getData(String collection, String documentId) async {
