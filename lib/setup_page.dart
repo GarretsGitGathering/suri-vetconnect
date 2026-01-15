@@ -3,6 +3,7 @@ import 'package:vetconnect/business/business_handler.dart';
 import 'package:vetconnect/constants.dart';
 import 'package:vetconnect/route_page.dart';
 import 'package:vetconnect/services/location_manager.dart';
+import 'package:vetconnect/services/openai_handler.dart';
 
 class SetupPage extends StatefulWidget {
   const SetupPage({super.key});
