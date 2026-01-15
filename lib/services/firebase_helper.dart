@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:string_similarity/string_similarity.dart';
 
 class _FirebaseUser {
   final String _userId;
@@ -32,17 +31,18 @@ class FirebaseHelper {
   String get userId => _firebaseUser.userId; 
   String? get userName => _firebaseUser.userName;
   String? get email => _firebaseUser.email;
+  LatLng? get location => _firebaseUser.location;
 
 
   FirebaseHelper._(this._firebaseUser);
 
 
-  Future<bool> saveBusiness(List<String?> businessData) async {
+  Future<bool> saveBusiness(Map<String, dynamic> businessData) async {
     if (userId != FirebaseAuth.instance.currentUser?.uid) {
       print("UserId does not match currently logged in user.");
       return false;
     }
-    return await _placeData("users", userId, {"business" : businessData});
+    return await _placeData("users", userId, {"businessName": "${businessData["name"]}", "business" : businessData});
   }
 
   Future<Map<String, dynamic>?> getBusiness(String userId) async {
@@ -56,17 +56,27 @@ class FirebaseHelper {
   }
 
   Future<List<Map<String, dynamic>?>> searchForBusiness(String queryString) async {
-    List<QueryDocumentSnapshot<Object?>> collectionSnapshot = await _getCollection("users") ?? [];
-   
-    collectionSnapshot.sort((a, b) => a["business"]["name"].similarityTo(b["business"]["name"]));
+    String cleanQuery = queryString.trim();
+    if (cleanQuery.isEmpty){
+      return [];
+    }
 
-    List<Map<String, dynamic>> users = collectionSnapshot.sublist(0, 9) as List<Map<String, dynamic>>;
+    try {
+      QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance.collection("users")
+                            .where("businessName", isGreaterThanOrEqualTo: queryString)
+                            .where("businessName", isLessThan: queryString + '\uf8ff')
+                            .limit(20).get();
+      
+      List<Map<String, dynamic>> userBusinesses = snapshot.docs.map((doc) {
+        Map<String, dynamic> data = doc.data();
+        return data["business"] as Map<String, dynamic>;
+      }).toList();
 
-    List<Map<String, dynamic>> userBusinesses = users.map((map) {
-      return map["business"];
-    }).toList() as List<Map<String, dynamic>>;
-
-    return userBusinesses;
+      return userBusinesses;
+    } catch (e) {
+      print("Unable to complete search: $e");
+      return [];
+    }
   }
 
   Future<List<QueryDocumentSnapshot<Object?>>?> _getCollection(String collection) async {

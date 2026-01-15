@@ -13,6 +13,17 @@ class BusinessSearch extends StatefulWidget {
 class _BusinessSearchState extends State<BusinessSearch> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      body: Padding(
+        padding: EdgeInsets.all(18.0),
+        child: Column(
+          children: [
+            SearchBar(
+              
+            )
+          ],
+        ),
+      )
+    );
   }
 }
